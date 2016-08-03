@@ -1,0 +1,25 @@
+2016-08-02T15:55:40.717016000 0.310655s notice: Recursively removing directory /Users/haileyfoster/student-randomizer/api/rethinkdb_data/tmp
+2016-08-02T15:55:40.722295000 0.315942s notice: Initializing directory /Users/haileyfoster/student-randomizer/api/rethinkdb_data
+2016-08-02T15:55:40.722476000 0.316114s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/haileyfoster/student-randomizer/api/rethinkdb_data' did not already exist or is empty.)
+2016-08-02T15:55:40.722611000 0.316249s notice: Running rethinkdb 2.3.4 (CLANG 7.3.0 (clang-703.0.31))...
+2016-08-02T15:55:40.750195000 0.343834s notice: Running on Darwin 15.6.0 x86_64
+2016-08-02T15:55:40.750249000 0.343886s notice: Loading data from directory /Users/haileyfoster/student-randomizer/api/rethinkdb_data
+2016-08-02T15:55:40.936914000 0.530551s info: Automatically using cache size of 100 MB
+2016-08-02T15:55:40.936938000 0.530575s warn: Cache size does not leave much memory for server and query overhead (available memory: 701 MB).
+2016-08-02T15:55:40.936946000 0.530583s warn: Cache size is very low and may impact performance.
+2016-08-02T15:55:40.944673000 0.538310s notice: Listening for intracluster connections on port 29015
+2016-08-02T15:55:40.946365000 0.540002s notice: Listening for client driver connections on port 28015
+2016-08-02T15:55:40.946491000 0.540128s notice: Listening for administrative HTTP connections on port 8080
+2016-08-02T15:55:40.946494000 0.540130s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2016-08-02T15:55:40.946500000 0.540137s notice: Listening on driver addresses: 127.0.0.1, ::1
+2016-08-02T15:55:40.946502000 0.540139s notice: Listening on http addresses: 127.0.0.1, ::1
+2016-08-02T15:55:40.946507000 0.540143s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2016-08-02T15:55:40.946511000 0.540148s notice: Server ready, "Hailey_Fosters_MacBook_Air_local_njv" 0a824982-540a-40cb-bc7d-a19f96ab8fd7
+2016-08-02T15:58:04.932582000 144.519687s info: Table 149357e4-fec6-48a8-84f9-c649afccc237: Starting a new Raft election for term 1.
+2016-08-02T15:58:04.933638000 144.520743s info: Table 149357e4-fec6-48a8-84f9-c649afccc237: Added replica on this server.
+2016-08-02T15:58:04.963313000 144.550419s info: Table 149357e4-fec6-48a8-84f9-c649afccc237: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-02T16:05:42.128379000 601.694868s notice: Removing file /Users/haileyfoster/student-randomizer/api/rethinkdb_data/149357e4-fec6-48a8-84f9-c649afccc237
+2016-08-02T16:05:42.128393000 601.694879s info: Table 149357e4-fec6-48a8-84f9-c649afccc237: Deleted the table.
+2016-08-02T16:06:07.759377000 627.324740s info: Table 48dd8d63-9d0b-490d-b7c3-43ba3dceaed9: Starting a new Raft election for term 1.
+2016-08-02T16:06:07.759484000 627.324847s info: Table 48dd8d63-9d0b-490d-b7c3-43ba3dceaed9: Added replica on this server.
+2016-08-02T16:06:07.790053000 627.355367s info: Table 48dd8d63-9d0b-490d-b7c3-43ba3dceaed9: This server is Raft leader for term 1. Latest log index is 0.
