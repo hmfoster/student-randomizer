@@ -12,6 +12,8 @@ var io = require('socket.io')(server);
 // Rethinkdb
 var r = require('rethinkdb');
 
+var helpers = require('./helpers')
+
 // Socket.io changefeed events
 var changefeedSocketEvents = require('./socket-events.js');
 
@@ -27,52 +29,25 @@ r.connect({ db: 'Popsicle_Sticks' })
 
         // insert new cohort
         socket.on('new cohort', function(cohortName) {
-            r.table('Cohorts').
-            insert({
-                    id: cohortName, 
-                    students: []
-                    }, {conflict: 'error'}).
-            run(connection, function(err, result){
-                if (err){
-                    console.log(err);
-                } else if (result.errors) {
-                    console.log(result.first_error);
-                } else {
-                    console.log(result);
-                }
-            });
+            helpers.newCohort(connection, cohortName);
         });
 
 
         // add students
         socket.on('add students', function(cohortName, students) {
-            r.table('Cohorts').get(cohortName)('students').
-                toArray(function(err, arr){
-                    console.log(arr);
-                })
-            // r.table('Cohorts').get(cohortName).update({
-            //     'students': r.row('students').toArray(function(err, arr){
-            //         arr.filter(function(student){
-            //             return students.indexOf(student) === -1;
-            //         })
-            //     })
-            // }).add(students)
-            // .run(connection);
+            helpers.addStudents(connection, cohortName, students);
         });
 
         socket.on('view students', function(cohortName){
-            r.table('Cohorts').filter(r.row('id').eq(cohortName)).
-                run(connection, function(err, cursor) {
-                    if (err) throw err;
-                    cursor.toArray(function(err, result) {
-                        if (err) throw err;
-                        console.log(result[0].students);
-                    });
-                });
+            helpers.viewStudents(connection, cohortName);
+        });
+
+        socket.on('delete student', function(cohortName, student){
+            helpers.deleteStudent(connection, cohortName, student);
         })
 
         socket.on('delete cohort', function(cohortName){
-            r.table('Cohorts').get(cohortName).delete().run(connection);
+            helpers.deleteCohort(connection, cohortName);
         })
         // emit events for changes to cohort
         r.table('Cohorts').changes({ includeInitial: true, squash: true }).run(connection)
