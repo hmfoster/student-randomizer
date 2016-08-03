@@ -12,7 +12,8 @@ var io = require('socket.io')(server);
 // Rethinkdb
 var r = require('rethinkdb');
 
-var helpers = require('./helpers')
+var helpers = require('./helpers');
+var popsicleSticks = require('./popsicle-sticks');
 
 // Socket.io changefeed events
 var changefeedSocketEvents = require('./socket-events.js');
@@ -48,6 +49,14 @@ r.connect({ db: 'Popsicle_Sticks' })
 
         socket.on('delete cohort', function(cohortName){
             helpers.deleteCohort(connection, cohortName);
+        })
+
+        socket.on('pick a student', function(cohortName){
+            popsicleSticks.pickName(connection, cohortName);
+        })
+
+        socket.on('skip', function(cohortName){
+            popsicleSticks.skip(connection, cohortName);
         })
         // emit events for changes to cohort
         r.table('Cohorts').changes({ includeInitial: true, squash: true }).run(connection)

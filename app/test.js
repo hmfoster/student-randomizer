@@ -7,7 +7,5 @@ socket.on('cohort:delete', function(cohortName, students){
 })
 socket.emit('delete cohort', 'Fromonsters')
 socket.emit('new cohort','Fromonsters');
-socket.emit('add students', 'Fromonsters', ['April', 'Hailey']);
-socket.emit('add students', 'Fromonsters', ['April', 'Carlos']);
-socket.emit('delete student', 'Fromonsters', 'April');
-socket.emit('view students', 'Fromonsters');
+socket.emit('add students', 'Fromonsters', ['April', 'Hailey','Carlos','Fred','Luna', 'Otto']);
+

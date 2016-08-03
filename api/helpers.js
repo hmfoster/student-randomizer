@@ -6,15 +6,14 @@ module.exports = {
     r.table('Cohorts').
     insert({
       id: cohortName,
-      students: {}
+      students: {},
+      toPickFrom: []
       }, {conflict: 'error'}).
     run(connection, function(err, result){
       if (err){
           console.log(err);
       } else if (result.errors) {
           console.log(result.first_error);
-      } else {
-          console.log(result);
       }
     });
   },
@@ -35,8 +34,8 @@ module.exports = {
     run(connection, function(err, cursor) {
       if (err) throw err;
       cursor.toArray(function(err, result) {
-          if (err) throw err;
-          console.log('Students', result[0].students);
+        if (err) throw err;
+        console.log('Students', result[0].students);
       });
     });
   },
@@ -54,6 +53,5 @@ module.exports = {
   deleteCohort : function(connection, cohortName){
     r.table('Cohorts').get(cohortName).delete().run(connection);
   },
-
 
 }
