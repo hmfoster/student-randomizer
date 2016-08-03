@@ -1,22 +1,23 @@
 // index.js
 
 // Express
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
-var path = require('path');
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const path = require('path');
 
 // Socket.io
-var io = require('socket.io')(server);
+const io = require('socket.io')(server);
 
 // Rethinkdb
-var r = require('rethinkdb');
+const r = require('rethinkdb');
 
-var helpers = require('./helpers');
-var popsicleSticks = require('./popsicle-sticks');
+
+const helpers = require('./helpers');
+const popsicleSticks = require('./popsicle-sticks');
 
 // Socket.io changefeed events
-var changefeedSocketEvents = require('./socket-events.js');
+const changefeedSocketEvents = require('./socket-events.js');
 
 app.use(express.static('app'));
 
@@ -25,48 +26,48 @@ app.get('*', function(req, res) {
 });
 
 r.connect({ db: 'Popsicle_Sticks' })
-.then(function(connection) {
-    io.on('connection', function (socket) {
+.then(connection => {
+    io.on('connection', socket => {
 
         // insert new cohort
-        socket.on('new cohort', function(cohortName) {
+        socket.on('new cohort', cohortName => {
             helpers.newCohort(connection, cohortName);
         });
 
 
         // add students
-        socket.on('add students', function(cohortName, students) {
+        socket.on('add students', (cohortName, students) => {
             helpers.addStudents(connection, cohortName, students);
         });
 
-        socket.on('view students', function(cohortName){
+        socket.on('view students', cohortName => {
             helpers.viewStudents(connection, cohortName);
         });
 
-        socket.on('delete student', function(cohortName, student){
+        socket.on('delete student', (cohortName, student) => {
             helpers.deleteStudent(connection, cohortName, student);
         })
 
-        socket.on('delete cohort', function(cohortName){
+        socket.on('delete cohort', cohortName =>{
             helpers.deleteCohort(connection, cohortName);
         })
 
-        socket.on('pick a student', function(cohortName){
+        socket.on('pick a student', cohortName => {
             popsicleSticks.pickName(connection, cohortName);
         })
 
-        socket.on('skip', function(cohortName){
+        socket.on('skip', cohortName => {
             popsicleSticks.skip(connection, cohortName);
         })
         // emit events for changes to cohort
         r.table('Cohorts').changes({ includeInitial: true, squash: true }).run(connection)
         .then(changefeedSocketEvents(socket, 'cohort'));
     });
-    server.listen(9000, function(){
+    server.listen(9000, () => {
         console.log('listening on 9000');
     });
 })
-.error(function(error) {
+.error(error => {
     console.log('Error connecting to RethinkDB!');
     console.log(error);
 });

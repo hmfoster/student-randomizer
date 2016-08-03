@@ -1,8 +1,8 @@
 var socket = io();
-socket.on('cohort:insert', function(cohortName, students){
+socket.on('cohort:insert', (cohortName, students) => {
   console.log(cohortName, students);
 });
-socket.on('cohort:delete', function(cohortName, students){
+socket.on('cohort:delete', (cohortName, students) => {
   console.log('deleted from', cohortName, students)
 })
 socket.emit('delete cohort', 'Fromonsters')

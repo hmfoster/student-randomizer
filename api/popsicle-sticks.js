@@ -1,16 +1,17 @@
-var r = require('rethinkdb');
+const r = require('rethinkdb');
+const cohorts = r.table('Cohorts');
 
-var getStick = function(connection, cohortName, list){
+function getStick (connection, cohortName, list){
   //pop off and return the last name from toPickFrom
-  var chosen = list.pop();
-  r.table('Cohorts').get(cohortName).update({
+  const chosen = list.pop();
+  cohorts.get(cohortName).update({
     'toPickFrom': list,
     lastChosen : chosen
   }).
   run(connection)
 };
 
-var shuffleNames = function(list){
+function shuffleNames (list){
   //shuffle array of names,
   for (var i = 0; i < list.length; i++) {
     var index = Math.floor(Math.random()*(list.length-i)+i);
@@ -20,51 +21,45 @@ var shuffleNames = function(list){
   };
   return list;
 };
-var pickName = function(connection, cohortName){
-  //if toPickFrom is empty, create it from shuffleNames
-  r.table('Cohorts').get(cohortName)('toPickFrom').run(connection).
-  then(function(list){
-    if(!list.length){
-      r.table('Cohorts').get(cohortName)('students').run(connection).
-      then(function(students){
-        var shuffled = shuffleNames(Object.keys(students));
-        getStick(connection, cohortName, shuffled);
-      });
-    } else {
-      r.table('Cohorts').get(cohortName)('toPickFrom').run(connection).
-      then(function(list){
-        getStick(connection, cohortName, list)
-      })
-    }
-
-  });
-
-
-};
-
-var skip = function(connection, cohortName){
-  console.log('skip')
-  r.table('Cohorts').get(cohortName)('toPickFrom').run(connection).
-  then(function(list){
-    r.table('Cohorts').get(cohortName)('lastChosen').run(connection).
-    then(function(lastChosen){
-      list.unshift(lastChosen);
-      list = shuffleNames(list);
-      r.table('Cohorts').get(cohortName).update({
-        'toPickFrom': list,
-        lastChosen : ''
-      }).
-      run(connection).
-      then(function(){
-        pickName(connection, cohortName);
-      })
-
-    })
-
-  })
-}
 
 module.exports = {
-  pickName : pickName,
-  skip : skip
+  pickName : (connection, cohortName) => {
+    const cohort = cohorts.get(cohortName)
+    //if toPickFrom is empty, create it from shuffleNames
+    cohort('toPickFrom').run(connection).
+    then(list => {
+      if(!list.length){
+        cohort('students').run(connection).
+        then(students => {
+          var shuffled = shuffleNames(Object.keys(students));
+          getStick(connection, cohortName, shuffled);
+        });
+      } else {
+        cohort('toPickFrom').run(connection).
+        then(list => {
+          getStick(connection, cohortName, list)
+        });
+      }
+    });
+  },
+
+  skip : (connection, cohortName) => {
+    const cohort = cohorts.get(cohortName)
+    cohort('toPickFrom').run(connection).
+    then(list => {
+      cohort('lastChosen').run(connection).
+      then(lastChosen => {
+        list.unshift(lastChosen);
+        list = shuffleNames(list);
+        cohort.update({
+          'toPickFrom': list,
+          lastChosen : ''
+        }).
+        run(connection).
+        then(() => {
+          module.exports.pickName(connection, cohortName);
+        });
+      });
+    });
+  }
 }

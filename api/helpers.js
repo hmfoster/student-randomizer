@@ -1,15 +1,15 @@
 // Rethinkdb
-var r = require('rethinkdb');
+const r = require('rethinkdb');
 
 module.exports = {
-  newCohort : function(connection, cohortName){
+  newCohort : (connection, cohortName) => {
     r.table('Cohorts').
     insert({
       id: cohortName,
       students: {},
       toPickFrom: []
       }, {conflict: 'error'}).
-    run(connection, function(err, result){
+    run(connection, (err, result) => {
       if (err){
           console.log(err);
       } else if (result.errors) {
@@ -17,9 +17,9 @@ module.exports = {
       }
     });
   },
-  addStudents : function(connection, cohortName, students){
+  addStudents : (connection, cohortName, students) => {
     var studentObj = {};
-    students.forEach(function(student){
+    students.forEach(student => {
         studentObj[student] = true;
     })
     r.table('Cohorts').get(cohortName).update({
@@ -29,18 +29,18 @@ module.exports = {
 
   },
 
-  viewStudents : function(connection, cohortName){
+  viewStudents : (connection, cohortName) => {
     r.table('Cohorts').filter(r.row('id').eq(cohortName)).
-    run(connection, function(err, cursor) {
+    run(connection, (err, cursor) => {
       if (err) throw err;
-      cursor.toArray(function(err, result) {
+      cursor.toArray((err, result) => {
         if (err) throw err;
         console.log('Students', result[0].students);
       });
     });
   },
 
-  deleteStudent : function(connection, cohortName, student){
+  deleteStudent : (connection, cohortName, student) => {
     var obj = {};
     obj[student] = true;
     r.table('Cohorts').get(cohortName).
@@ -50,7 +50,7 @@ module.exports = {
     run(connection);
   },
 
-  deleteCohort : function(connection, cohortName){
+  deleteCohort : (connection, cohortName) => {
     r.table('Cohorts').get(cohortName).delete().run(connection);
   },
 

@@ -1,6 +1,6 @@
-module.exports = function(socket, entityName) {
-  return function(rows) {
-    rows.each(function(err, row) {
+module.exports = (socket, entityName) => {
+  return rows => {
+    rows.each((err, row) => {
       if (err) { return console.log(err); }
       else if (row.new_val && !row.old_val) {
         socket.emit(entityName + ":insert", row.new_val.id, row.new_val.students);
