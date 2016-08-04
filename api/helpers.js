@@ -42,7 +42,7 @@ module.exports = {
 
   deleteStudent : (connection, cohortName, student) => {
     var obj = {};
-    obj[student] = true;
+    obj[student] = student;
     r.table('Cohorts').get(cohortName).
     replace(r.row.without({
         students: obj
