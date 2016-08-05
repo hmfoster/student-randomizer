@@ -2,8 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './app/components/index.jsx',
-    output: { path: __dirname + '/app', filename: 'bundle.js' },
+    entry: './app/index.jsx',
+    output: { path: __dirname + '/app/public', filename: 'bundle.js' },
     module: {
         loaders: [{
             test: /.jsx?$/,
