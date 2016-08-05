@@ -4,16 +4,14 @@ import ReactDOM from 'react-dom';
 import Cohorts from './components/Cohorts.jsx';
 
 import { store } from './stores/stores.js';
+import SocketListeners from './socket-events/socket-events.js';
+// import io from 'socket.io-client';
+// const io = require("socket.io-client");
+// const socket = io.connect('/');
 
-const log = () => {
-  console.log(store.getState());
-}
+SocketListeners(store);
 
-store.subscribe(log);
-
-store.dispatch({
-  type: 'CREATE_COHORT',
-  name: 'Fromonsters'
-});
+socket.emit('CREATE_COHORT', 'Fromonsters');
+console.log('here')
 
 ReactDOM.render(<Cohorts />, document.getElementById('app'));

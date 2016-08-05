@@ -60,18 +60,20 @@
 
 	var _stores = __webpack_require__(178);
 
+	var _socketEvents = __webpack_require__(194);
+
+	var _socketEvents2 = _interopRequireDefault(_socketEvents);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var log = function log() {
-	  console.log(_stores.store.getState());
-	};
+	// import io from 'socket.io-client';
+	// const io = require("socket.io-client");
+	// const socket = io.connect('/');
 
-	_stores.store.subscribe(log);
+	(0, _socketEvents2.default)(_stores.store);
 
-	_stores.store.dispatch({
-	  type: 'CREATE_COHORT',
-	  name: 'Fromonsters'
-	});
+	socket.emit('CREATE_COHORT', 'Fromonsters');
+	console.log('here');
 
 	_reactDom2.default.render(_react2.default.createElement(_Cohorts2.default, null), document.getElementById('app'));
 
@@ -22696,20 +22698,29 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
+
 	    case 'CREATE_COHORT':
+	      console.log('created ', action.name);
 	      var newState = state;
 	      newState[action.name] = {};
 	      return newState;
+
 	    case 'DELETE_COHORT':
+	      console.log('deleted ', action.name);
 	      return;
-	    case 'ADD_STUDENTS':
+
+	    case 'UPDATE_STUDENTS':
+	      console.log('updated students: ', action.students);
 	      return;
-	    case 'REMOVE_STUDENT':
-	      return;
+
 	    case 'PICK_STUDENT':
+	      console.log('Next student: ', action.student);
 	      return;
+
 	    case 'SKIP_STUDENT':
+	      console.log('Skipped student. Next student: ', action.student);
 	      return;
+
 	    case 'CREATE_GROUPS':
 	      return;
 	    default:
@@ -22718,6 +22729,54 @@
 	};
 
 	exports.default = reducer;
+
+/***/ },
+/* 194 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (store) {
+	  socket.on('CREATE_COHORT', function (cohortName) {
+	    store.dispatch({
+	      type: 'CREATE_COHORT',
+	      name: cohortName
+	    });
+	  });
+
+	  socket.on('DELETE_COHORT', function (cohortName) {
+	    store.dispatch({
+	      type: 'DELETE_COHORT',
+	      name: cohortName
+	    });
+	  });
+
+	  socket.on('UPDATE_STUDENTS', function (cohortName, students) {
+	    store.dispatch({
+	      type: 'UPDATE_STUDENTS',
+	      name: cohortName,
+	      students: students
+	    });
+	  });
+
+	  socket.on('PICK_STUDENT', function (student) {
+	    store.dispatch({
+	      type: 'PICK_STUDENT',
+	      nextStudent: student
+	    });
+	  });
+
+	  socket.on('SKIP_STUDENT', function (student) {
+	    store.dispatch({
+	      type: 'SKIP_STUDENT',
+	      nextStudent: student
+	    });
+	  });
+	};
 
 /***/ }
 /******/ ]);

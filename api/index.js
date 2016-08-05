@@ -30,33 +30,34 @@ r.connect({ db: 'Popsicle_Sticks' })
     io.on('connection', socket => {
 
         // insert new cohort
-        socket.on('new cohort', cohortName => {
+        socket.on('CREATE_COHORT', cohortName => {
             helpers.newCohort(connection, cohortName);
         });
 
 
         // add students
-        socket.on('add students', (cohortName, students) => {
+        socket.on('ADD_STUDENTS', (cohortName, students) => {
             helpers.addStudents(connection, cohortName, students);
         });
 
-        socket.on('view students', cohortName => {
+        socket.on('VIEW_STUDENTS', cohortName => {
             helpers.viewStudents(connection, cohortName);
         });
 
-        socket.on('delete student', (cohortName, student) => {
+        socket.on('DELETE_STUDENT', (cohortName, student) => {
             helpers.deleteStudent(connection, cohortName, student);
         })
 
-        socket.on('delete cohort', cohortName =>{
+        socket.on('DELETE_COHORT', cohortName =>{
+            console.log('delete cohort')
             helpers.deleteCohort(connection, cohortName);
         })
 
-        socket.on('pick a student', cohortName => {
+        socket.on('PICK_STUDENT', cohortName => {
             popsicleSticks.pickName(connection, cohortName);
         })
 
-        socket.on('skip', cohortName => {
+        socket.on('SKIP_STUDENT', cohortName => {
             popsicleSticks.skip(connection, cohortName);
         })
         // emit events for changes to cohort
