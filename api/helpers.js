@@ -51,7 +51,6 @@ module.exports = {
   },
 
   deleteCohort : (connection, cohortName) => {
-    console.log('deleting cohort now');
     r.table('Cohorts').get(cohortName).delete().run(connection);
   },
 

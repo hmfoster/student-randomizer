@@ -1,8 +1,9 @@
 export default function(store) {
-  socket.on('CREATE_COHORT', cohortName => {
+
+  socket.on('CREATE_COHORT', cohortData => {
     store.dispatch({
       type: 'CREATE_COHORT',
-      name: cohortName
+      data: cohortData
     });
   });
 
@@ -27,5 +28,4 @@ export default function(store) {
       nextStudent: student
     });
   });
-
 }

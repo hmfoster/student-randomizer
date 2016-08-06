@@ -49,7 +49,6 @@ r.connect({ db: 'Popsicle_Sticks' })
         })
 
         socket.on('DELETE_COHORT', cohortName =>{
-            console.log('delete cohort')
             helpers.deleteCohort(connection, cohortName);
         })
 

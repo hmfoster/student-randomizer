@@ -8,7 +8,10 @@ import SocketListeners from './socket-events/socket-events.js';
 
 SocketListeners(store);
 
-socket.emit('CREATE_COHORT', 'Fromonsters');
-console.log('here')
+const log = () => {
+  console.log(store.getState());
+}
+
+store.subscribe(log);
 
 ReactDOM.render(<Cohorts />, document.getElementById('app'));
