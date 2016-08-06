@@ -1,8 +1,3 @@
-// import io from 'socket.io-client'
-// const io = require("socket.io-client/socket.io");
-
-// const socket = io.connect('/');
-
 export default function(store) {
   socket.on('CREATE_COHORT', cohortName => {
     store.dispatch({
@@ -32,13 +27,5 @@ export default function(store) {
       nextStudent: student
     });
   });
-
-  socket.on('SKIP_STUDENT', (student) => {
-    store.dispatch({
-      type: 'SKIP_STUDENT',
-      nextStudent: student
-    });
-  });
-
 
 }
