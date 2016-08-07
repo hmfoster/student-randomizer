@@ -28,7 +28,6 @@ app.get('*', function(req, res) {
 r.connect({ db: 'Popsicle_Sticks' })
 .then(connection => {
     io.on('connection', socket => {
-
         // insert new cohort
         socket.on('CREATE_COHORT', cohortName => {
             helpers.newCohort(connection, cohortName);

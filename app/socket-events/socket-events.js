@@ -1,5 +1,5 @@
 export default function(store) {
-
+  
   socket.on('CREATE_COHORT', (cohortName, students, nextStudent) => {
     store.dispatch({
       type: 'CREATE_COHORT',

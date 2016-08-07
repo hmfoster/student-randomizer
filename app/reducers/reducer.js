@@ -1,13 +1,13 @@
-export const reducer = (state = {}, action) => {
+import { combineReducers } from 'redux';
+
+const allCohorts = (state = {}, action) => {
   let newState;
-
   switch (action.type) {
-
     case 'CREATE_COHORT':
       let newCohort = {};
       newCohort[action.name] = {
-        students : action.students,
-        nextStudent : action.nextStudent,
+        students : action.students, 
+        nextStudent : action.nextStudent
       };
       return Object.assign({}, state, newCohort);
 
@@ -17,20 +17,58 @@ export const reducer = (state = {}, action) => {
       return newState;
 
     case 'UPDATE_STUDENTS':
-      newState =  Object.assign({}, state);
-      newState[action.name].students = action.students;
-      return newState;
+      return Object.assign({}, state, studentReducer(state[action.name], action));
 
     case 'NEXT_STUDENT':
-      newState = Object.assign({}, state);
-      newState[action.name].nextStudent = action.nextStudent;
-      return newState;
+      return Object.assign({}, state, studentReducer(state[action.name], action));
 
     case 'CREATE_GROUPS':
-      return;
+      return Object.assign({}, state, studentReducer(state[action.name], action));
+
     default:
       return state;
   }
 }
 
-export default reducer;
+const students = (state = {}, action) => {
+  let newState;
+  switch (action.type) {
+    case 'UPDATE_STUDENTS':
+      newState =  {};
+      newState[action.name] = Object.assign({}, state, {
+        students : action.students
+      });
+      return newState;
+    
+    case 'NEXT_STUDENT' :
+      newState = {};
+      newState[action.name] = Object.assign({}, state, {
+        nextStudent : action.nextStudent
+      });
+      return newState;
+    
+    case 'CREATE_GROUPS':
+      return state;
+    
+    default:
+      return state;
+
+  }
+}
+
+const currentCohort = (state = 'None Selected', action) => {
+  switch (action.type){
+    case 'SWITCH_COHORT':
+      return action.cohortName;
+    default:
+      return state;
+  }
+
+}
+
+export const app = combineReducers({
+  allCohorts,
+  currentCohort
+});
+
+export default app;
