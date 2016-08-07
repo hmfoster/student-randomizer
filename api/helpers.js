@@ -41,11 +41,12 @@ module.exports = {
   },
 
   deleteStudent : (connection, cohortName, student) => {
+    console.log('deleting the student');
     var obj = {};
     obj[student] = student;
     r.table('Cohorts').get(cohortName).
     replace(r.row.without({
-        students: obj
+        students: student
     })).
     run(connection);
   },

@@ -4,14 +4,16 @@ export const reducer = (state = {}, action) => {
   switch (action.type) {
 
     case 'CREATE_COHORT':
-      return Object.assign({}, state, action.data);
+      let newCohort = {};
+      newCohort[action.name] = {
+        students : action.students,
+        nextStudent : action.nextStudent,
+      };
+      return Object.assign({}, state, newCohort);
 
     case 'DELETE_COHORT':
-      console.log('old state', state)
       newState = Object.assign({}, state);
-      console.log('new state', newState)
       delete newState[action.name];
-      console.log('deleted', newState);
       return newState;
 
     case 'UPDATE_STUDENTS':
@@ -19,10 +21,10 @@ export const reducer = (state = {}, action) => {
       newState[action.name].students = action.students;
       return newState;
 
-    case 'PICK_STUDENT':
-      return Object.assign({}, state, {
-        nextStudent : action.student
-      });
+    case 'NEXT_STUDENT':
+      newState = Object.assign({}, state);
+      newState[action.name].nextStudent = action.nextStudent;
+      return newState;
 
     case 'CREATE_GROUPS':
       return;

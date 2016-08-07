@@ -34,6 +34,9 @@ r.connect({ db: 'Popsicle_Sticks' })
             helpers.newCohort(connection, cohortName);
         });
 
+        socket.on('DELETE_COHORT', cohortName =>{
+            helpers.deleteCohort(connection, cohortName);
+        })
 
         // add students
         socket.on('ADD_STUDENTS', (cohortName, students) => {
@@ -46,10 +49,6 @@ r.connect({ db: 'Popsicle_Sticks' })
 
         socket.on('DELETE_STUDENT', (cohortName, student) => {
             helpers.deleteStudent(connection, cohortName, student);
-        })
-
-        socket.on('DELETE_COHORT', cohortName =>{
-            helpers.deleteCohort(connection, cohortName);
         })
 
         socket.on('PICK_STUDENT', cohortName => {

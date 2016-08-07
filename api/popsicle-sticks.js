@@ -12,10 +12,11 @@ function getStick (connection, cohortName, list){
 };
 
 function shuffleNames (list){
-  //shuffle array of names,
+  //shuffle array of names
+  let index, temp;
   for (var i = 0; i < list.length; i++) {
-    var index = Math.floor(Math.random()*(list.length-i)+i);
-    var temp = list[i];
+    index = Math.floor(Math.random()*(list.length-i)+i);
+    temp = list[i];
     list[i] = list[index];
     list[index] = temp;
   };
@@ -31,8 +32,14 @@ module.exports = {
       if(!list.length){
         cohort('students').run(connection).
         then(students => {
-          var shuffled = shuffleNames(Object.keys(students));
-          getStick(connection, cohortName, shuffled);
+          cohort('lastChosen').run(connection).
+          then(lastChosen => {
+            let shuffled = shuffleNames(Object.keys(students));
+            if (shuffled[shuffled.length-1] === lastChosen){
+              shuffled.unshift(shuffled.pop());
+            }
+            getStick(connection, cohortName, shuffled);
+          })
         });
       } else {
         cohort('toPickFrom').run(connection).

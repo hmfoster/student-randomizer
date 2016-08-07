@@ -9,7 +9,7 @@ import SocketListeners from './socket-events/socket-events.js';
 SocketListeners(store);
 
 const log = () => {
-  console.log(store.getState());
+  console.log('Store', store.getState());
 }
 
 store.subscribe(log);
