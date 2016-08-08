@@ -7,7 +7,8 @@ module.exports = {
     insert({
       id: cohortName,
       students: {},
-      toPickFrom: []
+      toPickFrom: [],
+      lastChosen: ''
       }, {conflict: 'error'}).
     run(connection, (err, result) => {
       if (err){
