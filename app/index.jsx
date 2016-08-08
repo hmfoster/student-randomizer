@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Cohorts from './components/Cohorts.jsx';
+import Sticks from './components/Sticks.jsx';
 
 import { store } from './stores/stores.js';
 import SocketListeners from './socket-events/socket-events.js';
@@ -12,6 +12,19 @@ const log = () => {
   console.log('Store', store.getState());
 }
 
-store.subscribe(log);
+const render = () => {
+  const current = store.getState().currentCohort;
+  const cohort = store.getState().allCohorts[current];
+  ReactDOM.render(
+    <Sticks
+      current={current} 
+      nextStudent={cohort.nextStudent}
+      groups={cohort.groups}
+    />, 
+    document.getElementById('app')
+  );
+}
 
-ReactDOM.render(<Cohorts />, document.getElementById('app'));
+store.subscribe(log);
+store.subscribe(render);
+

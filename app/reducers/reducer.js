@@ -7,7 +7,8 @@ const allCohorts = (state = {}, action) => {
       let newCohort = {};
       newCohort[action.name] = {
         students : action.students, 
-        nextStudent : action.nextStudent
+        nextStudent : action.nextStudent,
+        groups : action.groups
       };
       return Object.assign({}, state, newCohort);
 
@@ -59,7 +60,7 @@ const students = (state = {}, action) => {
   }
 }
 
-const currentCohort = (state = 'None Selected', action) => {
+const currentCohort = (state = 'Fromonsters', action) => {
   switch (action.type){
     case 'SWITCH_COHORT':
       return action.cohortName;

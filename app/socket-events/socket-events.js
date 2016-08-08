@@ -1,11 +1,12 @@
 export default function(store) {
 
-  socket.on('CREATE_COHORT', (cohortName, students, nextStudent) => {
+  socket.on('CREATE_COHORT', (cohortName, students, nextStudent, groups) => {
     store.dispatch({
       type: 'CREATE_COHORT',
       name: cohortName,
       students: students,
-      nextStudent: nextStudent
+      nextStudent: nextStudent, 
+      groups: groups
     });
   });
 
