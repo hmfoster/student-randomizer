@@ -29,21 +29,7 @@ module.exports = {
 
   },
 
-  viewStudents : (connection, cohortName) => {
-    r.table('Cohorts').filter(r.row('id').eq(cohortName)).
-    run(connection, (err, cursor) => {
-      if (err) throw err;
-      cursor.toArray((err, result) => {
-        if (err) throw err;
-        console.log('Students', result[0].students);
-      });
-    });
-  },
-
   deleteStudent : (connection, cohortName, student) => {
-    console.log('deleting the student');
-    var obj = {};
-    obj[student] = student;
     r.table('Cohorts').get(cohortName).
     replace(r.row.without({
         students: student

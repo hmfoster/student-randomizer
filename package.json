@@ -18,6 +18,7 @@
   "homepage": "https://github.com/hmfoster/student-randomizer#readme",
   "dependencies": {
     "express": "^4.14.0",
+    "lodash": "^4.14.1",
     "material-ui": "^0.15.3",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",

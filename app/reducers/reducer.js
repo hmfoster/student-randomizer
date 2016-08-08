@@ -17,13 +17,13 @@ const allCohorts = (state = {}, action) => {
       return newState;
 
     case 'UPDATE_STUDENTS':
-      return Object.assign({}, state, studentReducer(state[action.name], action));
+      return Object.assign({}, state, students(state[action.name], action));
 
     case 'NEXT_STUDENT':
-      return Object.assign({}, state, studentReducer(state[action.name], action));
+      return Object.assign({}, state, students(state[action.name], action));
 
     case 'CREATE_GROUPS':
-      return Object.assign({}, state, studentReducer(state[action.name], action));
+      return Object.assign({}, state, students(state[action.name], action));
 
     default:
       return state;
@@ -48,8 +48,11 @@ const students = (state = {}, action) => {
       return newState;
     
     case 'CREATE_GROUPS':
-      return state;
-    
+      newState = {};
+      newState[action.name] = Object.assign({}, state, {
+        groups : action.groups
+      });
+    return newState;    
     default:
       return state;
 

@@ -13,7 +13,7 @@ const io = require('socket.io')(server);
 const r = require('rethinkdb');
 
 
-const helpers = require('./helpers');
+const cohorts = require('./cohorts');
 const popsicleSticks = require('./popsicle-sticks');
 
 // Socket.io changefeed events
@@ -28,35 +28,35 @@ app.get('*', function(req, res) {
 r.connect({ db: 'Popsicle_Sticks' })
 .then(connection => {
     io.on('connection', socket => {
-        // insert new cohort
+
         socket.on('CREATE_COHORT', cohortName => {
-            helpers.newCohort(connection, cohortName);
+            cohorts.newCohort(connection, cohortName);
         });
 
         socket.on('DELETE_COHORT', cohortName =>{
-            helpers.deleteCohort(connection, cohortName);
-        })
-
-        // add students
-        socket.on('ADD_STUDENTS', (cohortName, students) => {
-            helpers.addStudents(connection, cohortName, students);
+            cohorts.deleteCohort(connection, cohortName);
         });
 
-        socket.on('VIEW_STUDENTS', cohortName => {
-            helpers.viewStudents(connection, cohortName);
+        socket.on('ADD_STUDENTS', (cohortName, students) => {
+            cohorts.addStudents(connection, cohortName, students);
         });
 
         socket.on('DELETE_STUDENT', (cohortName, student) => {
-            helpers.deleteStudent(connection, cohortName, student);
-        })
+            cohorts.deleteStudent(connection, cohortName, student);
+        });
 
         socket.on('PICK_STUDENT', cohortName => {
             popsicleSticks.pickName(connection, cohortName);
-        })
+        });
 
         socket.on('SKIP_STUDENT', cohortName => {
             popsicleSticks.skip(connection, cohortName);
-        })
+        });
+
+        socket.on('CREATE_GROUPS', (cohortName, groupSize) => {
+            popsicleSticks.createGroups(connection, cohortName, groupSize);
+        });
+
         // emit events for changes to cohort
         r.table('Cohorts').changes({ includeInitial: true, squash: true }).run(connection)
         .then(changefeedSocketEvents(socket, 'cohort'));
