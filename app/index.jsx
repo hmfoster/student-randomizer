@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Sticks from './components/Sticks.jsx';
 import CohortSelector from './components/CohortSelector.jsx';
-
+import CurrentCohort from './components/CurrentCohort.jsx';
 import { store } from './stores/stores.js';
 import SocketListeners from './socket-events/socket-events.js';
 
@@ -22,21 +22,15 @@ const render = () => {
       nextStudent: '',
       groups: []
     }
-  } //else {
-    ReactDOM.render(
-      <div>
+  }
+  console.log('CURRENT',current);
+  ReactDOM.render(
+    <div>
       <CohortSelector allCohorts={allCohorts} currentName={current.cohortName}/>, 
-      <Sticks
-        current={current.cohortName} 
-        nextStudent={current.nextStudent}
-        groups={current.groups}
-        allCohorts={allCohorts}
-      />
-      </div>,
-      document.getElementById('app')
-    );
-    
-  //}
+      <CurrentCohort current={current}/>
+    </div>,
+    document.getElementById('app')
+  );
 }
 
 store.subscribe(log);

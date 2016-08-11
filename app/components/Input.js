@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
-const Input = ({value, onChange, onClick}) => (
+const Input = ({label, value, onChange, onClick}) => (
   <form>
-    <label> New cohort name </label>
+    <label> {label} </label>
     <input type="text" onChange={onChange} />
     <button onClick={onClick}> Create </button>
   </form>

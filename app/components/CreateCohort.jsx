@@ -7,11 +7,12 @@ class CreateCohort extends React.Component {
       <Input 
         onClick={() => {
           socket.emit('CREATE_COHORT', this.state.value);
-      }} 
-      onChange={(e) => {
-        this.setState({value: e.target.value});
-      }}
-      value=''/>
+        }} 
+        onChange={(e) => {
+          this.setState({value: e.target.value});
+        }}
+        value=''
+      />
     )
   }
 }

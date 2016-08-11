@@ -14,6 +14,7 @@ class CohortSelector extends React.Component {
           }}
           options={options}
           choice='cohort'
+          label='New cohort name'
       />
     );
   };
