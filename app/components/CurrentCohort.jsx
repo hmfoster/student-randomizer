@@ -14,6 +14,14 @@ export default class CurrentCohort extends React.Component {
     else if (this.props.current.cohortName !== '' && this.props.current !== 'initial'){
       return (
         <div>
+          <h1>{current.cohortName}</h1>
+          <button 
+            onClick={() => {
+              socket.emit('DELETE_COHORT', current.cohortName);
+            }}
+          > 
+            Delete Cohort
+          </button>
           <Sticks
             current={current.cohortName} 
             nextStudent={current.nextStudent}
