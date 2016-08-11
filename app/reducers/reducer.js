@@ -3,13 +3,19 @@ import { combineReducers } from 'redux';
 const allCohorts = (state = {}, action) => {
   let newState;
   switch (action.type) {
+    // case 'CREATE_COHORT':
+    //   let newCohort = {};
+    //   newCohort[action.name] = {
+    //     students : action.students, 
+    //     nextStudent : action.nextStudent,
+    //     groups : action.groups
+    //   };
+    //   return Object.assign({}, state, newCohort);
+
     case 'CREATE_COHORT':
+      console.log('here', action.name)
       let newCohort = {};
-      newCohort[action.name] = {
-        students : action.students, 
-        nextStudent : action.nextStudent,
-        groups : action.groups
-      };
+      newCohort[action.name] = true;
       return Object.assign({}, state, newCohort);
 
     case 'DELETE_COHORT':
@@ -60,8 +66,14 @@ const students = (state = {}, action) => {
   }
 }
 
-const currentCohort = (state = 'Fromonsters', action) => {
+const currentCohort = (state = {}, action) => {
   switch (action.type){
+    case 'CREATE_COHORT':
+      return Object.assign({}, state, {
+        students: action.students,
+        groups: action.groups,
+        nextStudent: action.nextStudent
+      });
     case 'SWITCH_COHORT':
       return action.cohortName;
     default:
