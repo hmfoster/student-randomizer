@@ -8,7 +8,7 @@ class Sticks extends React.Component {
 
         return (
           <div>
-            <h3>{this.props.current}</h3>
+            <h1>{this.props.current}</h1>
             <NextStudent nextStudent={this.props.nextStudent} current={this.props.current}/>
             <Groups groups={this.props.groups} current={this.props.current} />
           </div>

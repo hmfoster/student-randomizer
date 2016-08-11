@@ -4,8 +4,10 @@ import Input from './Input.js';
 export class Students extends React.Component {
 
   render() {
+    const students = Object.keys(this.props.students);
     return (
       <div>
+        <h2> Students </h2>
         <Input 
           value= ''
           onClick={() => {
@@ -16,6 +18,13 @@ export class Students extends React.Component {
           }}
           label='Add new students; separate with a ","'
         />
+        <ul> 
+          {students.map((student, i) => 
+            <li key={i}> {student}</li>
+              
+        
+          )}
+        </ul>
       </div>
     );
   }
