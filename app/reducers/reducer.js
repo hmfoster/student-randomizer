@@ -24,14 +24,6 @@ const currentCohort = (state = {}, action) => {
 
   switch (action.type){
     
-    case 'CREATE_COHORT':
-      return Object.assign({}, state, {
-        cohortName: action.cohortName,
-        students: action.students,
-        groups: action.groups,
-        nextStudent: action.nextStudent
-      });
-
     case 'SWITCH_COHORT':
       return Object.assign({}, state, { 
         cohortName: action.cohortName, 

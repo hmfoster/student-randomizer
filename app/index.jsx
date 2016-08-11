@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Sticks from './components/Sticks.jsx';
+import CohortSelector from './components/CohortSelector.jsx';
 
 import { store } from './stores/stores.js';
 import SocketListeners from './socket-events/socket-events.js';
@@ -13,17 +14,29 @@ const log = () => {
 }
 
 const render = () => {
-  const current = store.getState().currentCohort;
+  let current = store.getState().currentCohort;
   const allCohorts = Object.keys(store.getState().allCohorts);
-  ReactDOM.render(
-    <Sticks
-      current={current.cohortName} 
-      nextStudent={current.nextStudent}
-      groups={current.groups}
-      allCohorts={allCohorts}
-    />, 
-    document.getElementById('app')
-  );
+  if (!current.cohortName){
+    current = {
+      cohortName: '',
+      nextStudent: '',
+      groups: []
+    }
+  } //else {
+    ReactDOM.render(
+      <div>
+      <CohortSelector allCohorts={allCohorts} currentName={current.cohortName}/>, 
+      <Sticks
+        current={current.cohortName} 
+        nextStudent={current.nextStudent}
+        groups={current.groups}
+        allCohorts={allCohorts}
+      />
+      </div>,
+      document.getElementById('app')
+    );
+    
+  //}
 }
 
 store.subscribe(log);

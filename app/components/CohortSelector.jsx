@@ -8,7 +8,7 @@ class CohortSelector extends React.Component {
     return (
       <Selector selectValue={this.props.currentName} 
           onChange={(e) => {
-              this.selectValue = e.target.value;
+              this.setState.value = e.target.value;
               socket.emit('SWITCH_COHORT', e.target.value);
           }}
           options={this.props.allCohorts}

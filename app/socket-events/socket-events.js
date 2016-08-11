@@ -42,13 +42,22 @@ export default function(store) {
   });
 
   socket.on('SWITCH_COHORT', (cohortData) => {
-    console.log('HERE',cohortData);
-    store.dispatch({
-      type: 'SWITCH_COHORT', 
-      cohortName: cohortData.id, 
-      students: cohortData.students,
-      nextStudent: cohortData.lastChosen, 
-      groups: cohortData.groups
-    })
-  })
+    if (cohortData === null){
+      store.dispatch({
+        type: 'SWITCH_COHORT', 
+        cohortName: undefined,
+        students: undefined,
+        nextStudent: undefined,
+        groups: undefined,
+      });
+    } else {
+      store.dispatch({
+        type: 'SWITCH_COHORT', 
+        cohortName: cohortData.id, 
+        students: cohortData.students,
+        nextStudent: cohortData.lastChosen, 
+        groups: cohortData.groups
+      });
+    }
+  });
 };
