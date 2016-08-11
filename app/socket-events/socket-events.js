@@ -4,7 +4,7 @@ export default function(store) {
     console.log('creating')
     store.dispatch({
       type: 'CREATE_COHORT',
-      name: cohortName,
+      cohortName: cohortName,
       students: students,
       nextStudent: nextStudent, 
       groups: groups

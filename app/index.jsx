@@ -14,11 +14,10 @@ const log = () => {
 
 const render = () => {
   const current = store.getState().currentCohort;
-  // const cohort = store.getState().allCohorts[current];
   const allCohorts = Object.keys(store.getState().allCohorts);
   ReactDOM.render(
     <Sticks
-      current={allCohorts[0]} 
+      current={current.cohortName} 
       nextStudent={current.nextStudent}
       groups={current.groups}
       allCohorts={allCohorts}
