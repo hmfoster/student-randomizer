@@ -41,14 +41,16 @@ export default function(store) {
     });
   });
 
-  socket.on('SWITCH_COHORT', (cohortData) => {
+  socket.on('SWITCH_COHORT', (cohortName, cohortData) => {
+    if (cohortName === 'Please select a cohort'){
+      cohortName = 'Select'
+    } else if (cohortName === 'Create New Cohort'){
+      cohortName = 'Create';
+    }
     if (cohortData === null){
       store.dispatch({
         type: 'SWITCH_COHORT', 
-        cohortName: undefined,
-        students: undefined,
-        nextStudent: undefined,
-        groups: undefined,
+        cohortName: cohortName,
       });
     } else {
       store.dispatch({

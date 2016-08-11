@@ -29,7 +29,7 @@ module.exports = {
     const cohort = cohorts.get(cohortName)
     cohort('toPickFrom').run(connection).
     then(list => {
-      //if toPickFrom is empty, create it from shuffleNames
+    //if toPickFrom is empty, create it from shuffleNames
       if(!list.length){
         cohort('students').run(connection).
         then(students => {
