@@ -7,7 +7,7 @@ class CohortSelector extends React.Component {
     super(props, context);
 
     this.state = {
-      selectValue: this.props.current
+      selectValue: this.props.current.cohortName
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -15,10 +15,7 @@ class CohortSelector extends React.Component {
 
   handleChange (e) {
     this.setState({selectValue:e.target.value});
-    store.dispatch({
-      type: 'SWITCH_COHORT',
-      cohortName: e.target.value
-    });
+    socket.emit('SWITCH_COHORT', e.target.value);
   };
 
   render () {

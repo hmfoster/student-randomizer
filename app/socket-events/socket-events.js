@@ -3,7 +3,7 @@ export default function(store) {
   socket.on('CREATE_COHORT', (cohortName, students, nextStudent, groups) => {
     store.dispatch({
       type: 'CREATE_COHORT',
-      name: cohortName,
+      cohortName: cohortName,
       students: students,
       nextStudent: nextStudent, 
       groups: groups
@@ -40,4 +40,15 @@ export default function(store) {
       groups: groups
     });
   });
+
+  socket.on('SWITCH_COHORT', (cohortData) => {
+    console.log('HERE',cohortData);
+    store.dispatch({
+      type: 'SWITCH_COHORT', 
+      cohortName: cohortData.id, 
+      students: cohortData.students,
+      nextStudent: cohortData.lastChosen, 
+      groups: cohortData.groups
+    })
+  })
 };

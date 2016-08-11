@@ -57,6 +57,10 @@ r.connect({ db: 'Popsicle_Sticks' })
             popsicleSticks.createGroups(connection, cohortName, groupSize);
         });
 
+        socket.on('SWITCH_COHORT', (cohortName) => {
+            cohorts.getCohortData(socket, connection, cohortName);
+        })
+
         // emit events for changes to cohort
         r.table('Cohorts').changes({ includeInitial: true, squash: true }).run(connection)
         .then(changefeedSocketEvents(socket, 'cohort'));
