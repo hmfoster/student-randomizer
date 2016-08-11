@@ -42,4 +42,9 @@ module.exports = {
     r.table('Cohorts').get(cohortName).delete().run(connection);
   },
 
+  getCohortData : (socket, connection, cohortName) => {
+    return r.table('Cohorts').get(cohortName).run(connection).then(result => {
+      socket.emit('SWITCH_COHORT',result);
+    });
+  }
 }

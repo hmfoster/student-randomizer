@@ -58,7 +58,7 @@ r.connect({ db: 'Popsicle_Sticks' })
         });
 
         socket.on('SWITCH_COHORT', (cohortName) => {
-            
+            cohorts.getCohortData(socket, connection, cohortName);
         })
 
         // emit events for changes to cohort

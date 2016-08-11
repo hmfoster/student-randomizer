@@ -33,6 +33,7 @@ const currentCohort = (state = {}, action) => {
       });
 
     case 'SWITCH_COHORT':
+      console.log(action);
       return Object.assign({}, state, { 
         cohortName: action.cohortName, 
         students: action.students,
