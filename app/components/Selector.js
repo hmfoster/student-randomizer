@@ -5,7 +5,7 @@ const Selector = ({selectValue, onChange, options, choice}) => (
     value={selectValue} 
     onChange={onChange} 
   >
-    <option key='initial' value='initial'>Select a {choice} </option>
+    <option key='select' value='Select'>Select a {choice} </option>
     {options.map((option, i) =>
       <option key={i} value={option}>{option}</option>
       )}

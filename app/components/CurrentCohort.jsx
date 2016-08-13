@@ -11,7 +11,7 @@ export default class CurrentCohort extends React.Component {
             <CreateCohort />
         )
     }
-    else if (this.props.current.cohortName !== '' && this.props.current !== 'initial'){
+    else if (this.props.current.cohortName !== '' && this.props.current.cohortName !== 'Select'){
       return (
         <div>
           <h1>{current.cohortName}</h1>

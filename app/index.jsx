@@ -23,7 +23,6 @@ const render = () => {
       groups: []
     }
   }
-  console.log('CURRENT',current);
   ReactDOM.render(
     <div>
       <CohortSelector allCohorts={allCohorts} currentName={current.cohortName}/>, 

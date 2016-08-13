@@ -19,7 +19,7 @@ module.exports = {
     });
   },
   addStudents : (connection, cohortName, students) => {
-    students = students.split(', ');
+    students = students.split(/\n|,/).map(function(student){return student.trim()});
     var studentObj = {};
     students.forEach(student => {
         studentObj[student] = true;
