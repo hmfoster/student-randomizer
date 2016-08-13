@@ -2,13 +2,14 @@
 const r = require('rethinkdb');
 
 module.exports = {
-  newCohort : (connection, cohortName) => {
+  newCohort : (socket, connection, cohortName) => {
     r.table('Cohorts').
     insert({
       id: cohortName,
       students: {},
       toPickFrom: [],
-      lastChosen: ''
+      lastChosen: '',
+      groups:[]
       }, {conflict: 'error'}).
     run(connection, (err, result) => {
       if (err){
@@ -16,6 +17,7 @@ module.exports = {
       } else if (result.errors) {
           console.log(result.first_error);
       }
+      module.exports.getCohortData(socket, connection, cohortName);
     });
   },
   addStudents : (connection, cohortName, students) => {
@@ -39,8 +41,10 @@ module.exports = {
     run(connection);
   },
 
-  deleteCohort : (connection, cohortName) => {
-    r.table('Cohorts').get(cohortName).delete().run(connection);
+  deleteCohort : (socket, connection, cohortName) => {
+    r.table('Cohorts').get(cohortName).delete().run(connection, function(err, result){
+      module.exports.getCohortData(socket, connection, '');
+    });
   },
 
   getCohortData : (socket, connection, cohortName) => {

@@ -30,11 +30,11 @@ r.connect({ db: 'Popsicle_Sticks' })
     io.on('connection', socket => {
 
         socket.on('CREATE_COHORT', cohortName => {
-            cohorts.newCohort(connection, cohortName);
+            cohorts.newCohort(socket, connection, cohortName);
         });
 
         socket.on('DELETE_COHORT', cohortName =>{
-            cohorts.deleteCohort(connection, cohortName);
+            cohorts.deleteCohort(socket, connection, cohortName);
         });
 
         socket.on('ADD_STUDENTS', (cohortName, students) => {
