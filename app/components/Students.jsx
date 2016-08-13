@@ -16,7 +16,7 @@ export class Students extends React.Component {
           onChange={(e) => {
             this.setState({value: e.target.value});
           }}
-          label='Add new students; separate with a ","'
+          label='Add new students; separate with a "," or a new line '
           id='add-students'
         />
         <ul> 

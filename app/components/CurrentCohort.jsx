@@ -26,7 +26,6 @@ export default class CurrentCohort extends React.Component {
             current={current.cohortName} 
             nextStudent={current.nextStudent}
             groups={current.groups}
-            allCohorts={this.props.allCohorts}
           />
           <Students current={current.cohortName} students={current.students}/>
         </div>
