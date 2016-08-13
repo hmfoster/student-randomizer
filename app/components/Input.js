@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 
-const Input = ({label, value, onChange, onClick}) => (
+const Input = ({id, label, value, onChange, onClick}) => (
   <form>
     <label> {label} </label>
-    <textarea onChange={onChange} />
+    <textarea id={id} onChange={onChange} />
     <button onClick={onClick}> Create </button>
   </form>
 )

@@ -9,18 +9,26 @@ export class Students extends React.Component {
       <div>
         <h2> Students </h2>
         <Input 
-          value= ''
           onClick={() => {
+            document.getElementById('add-students').value = "";
             socket.emit('ADD_STUDENTS', this.props.current, this.state.value);
           }} 
           onChange={(e) => {
             this.setState({value: e.target.value});
           }}
           label='Add new students; separate with a ","'
+          id='add-students'
         />
         <ul> 
           {students.map((student, i) => 
-            <li key={i}> {student}</li>
+            <li key={i}> 
+              <a href="#" 
+                onClick={()=>{
+                  socket.emit('DELETE_STUDENT', this.props.current, student);
+                }}>
+                X
+              </a> {student}
+            </li>
               
         
           )}
