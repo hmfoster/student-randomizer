@@ -1,10 +1,9 @@
 import React from 'react';
-import Input from './Input.js';
+import Input from './presentational/Input.js';
 
 export class Students extends React.Component {
 
   render() {
-    const students = Object.keys(this.props.students);
     return (
       <div>
         <h2> Students </h2>
@@ -20,7 +19,7 @@ export class Students extends React.Component {
           id='add-students'
         />
         <ul> 
-          {students.map((student, i) => 
+          {this.props.students.map((student, i) => 
             <li key={i}> 
               <a href="#" 
                 onClick={()=>{
@@ -29,8 +28,6 @@ export class Students extends React.Component {
                 X
               </a> {student}
             </li>
-              
-        
           )}
         </ul>
       </div>

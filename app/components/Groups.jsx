@@ -1,12 +1,18 @@
 import React from 'react';
 import _ from 'lodash';
-import Selector from './Selector.js';
+import Selector from './presentational/Selector.js';
 
 class groups extends React.Component {
+    
+    getCurrMin () {
+      const lastGroup = this.props.groups[this.props.groups.length-1];
+      return lastGroup ? lastGroup.length : 2;
+    }
+
     constructor(props) {
       super(props);
       this.state = {
-        selectValue: 2
+        selectValue: this.getCurrMin()
       };
     }
     render () {

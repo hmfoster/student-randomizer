@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from './Input.js';
+import Input from './presentational/Input.js';
 
 class CreateCohort extends React.Component {
   render(){
