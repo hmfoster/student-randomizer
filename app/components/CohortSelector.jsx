@@ -3,14 +3,20 @@ import { store } from '../stores/stores.js';
 import Selector from './Selector.js';
 
 class CohortSelector extends React.Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectValue: 'Select a Cohort'
+    };
+  }
   render () {
-    const options = [...this.props.allCohorts, 'Create New Cohort'];
+    const options = ['Select a Cohort',...this.props.allCohorts, 'Create New Cohort'];
+
     return (
-      <Selector selectValue={this.props.currentName} 
+      <Selector value={this.state.selectValue} 
           onChange={(e) => {
-              this.setState.value = e.target.value;
-              socket.emit('SWITCH_COHORT', e.target.value);
+            this.setState({selectValue: e.target.value});
+            socket.emit('SWITCH_COHORT', e.target.value);
           }}
           options={options}
           choice='cohort'

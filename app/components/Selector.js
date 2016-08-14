@@ -5,7 +5,6 @@ const Selector = ({selectValue, onChange, options, choice}) => (
     value={selectValue} 
     onChange={onChange} 
   >
-    <option key='select' value='Select'>Select a {choice} </option>
     {options.map((option, i) =>
       <option key={i} value={option}>{option}</option>
       )}
@@ -18,3 +17,4 @@ Selector.propTypes = {
 }
 
 export default Selector
+    // <option key='select' value='Select'>Select a {choice} </option>

@@ -1,17 +1,32 @@
 import React from 'react';
+import _ from 'lodash';
+import Selector from './Selector.js';
 
 class groups extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        selectValue: 2
+      };
+    }
     render () {
-      let groups;
-      if (!this.props.groups){
-        groups = [];
-      } else {
-        groups = this.props.groups;
+      let groups = this.props.groups;
+      let options = _.range(2,Math.floor(this.props.numStudents/2)+1);
+      if (!options.length){
+        options.push(2);
       }
       return (
         <div>
+          <Selector 
+            selectValue={this.state.selectValue}
+            onChange={(e)=>{
+              this.setState({selectValue: e.target.value});
+            }} 
+            options={options}
+            choice='minimum group size'
+          />
           <button onClick={() => {
-              socket.emit('CREATE_GROUPS',this.props.current,3);
+              socket.emit('CREATE_GROUPS',this.props.current,this.state.selectValue);
             }
           }
           >
@@ -26,7 +41,6 @@ class groups extends React.Component {
                   )}
                 </ul>
               </li>
-                
 
             )}
           </ul>
@@ -36,3 +50,5 @@ class groups extends React.Component {
 }
 
 export default groups;
+
+                

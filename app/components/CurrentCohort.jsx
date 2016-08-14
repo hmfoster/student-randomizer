@@ -26,6 +26,7 @@ export default class CurrentCohort extends React.Component {
             current={current.cohortName} 
             nextStudent={current.nextStudent}
             groups={current.groups}
+            numStudents={Object.keys(current.students).length}
           />
           <Students current={current.cohortName} students={current.students}/>
         </div>
