@@ -16,5 +16,4 @@ Selector.propTypes = {
   options: PropTypes.array.isRequired
 }
 
-export default Selector
-    // <option key='select' value='Select'>Select a {choice} </option>
+export default Selector;

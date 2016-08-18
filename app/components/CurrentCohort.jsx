@@ -1,5 +1,5 @@
 import React from 'react';
-import Sticks from './Sticks.jsx';
+import Sticks from './presentational/Sticks.jsx';
 import Students from './Students.jsx';
 import CreateCohort from './CreateCohort.jsx';
 

@@ -10,24 +10,24 @@ SocketListeners(store);
 
 const log = () => {
   console.log('Store', store.getState());
-}
+};
 
 const render = () => {
   let current = store.getState().currentCohort;
   const allCohorts = Object.keys(store.getState().allCohorts);
-  if (!current.cohortName){
+  if (!current.cohortName) {
     current = {
       cohortName: '',
       nextStudent: '',
-      groups: []
-    }
+      groups: [],
+    };
   }
 
   ReactDOM.render(
-    <PopsicleStickApp current={current} allCohorts={allCohorts}/>,
+    <PopsicleStickApp current={current} allCohorts={allCohorts} />,
     document.getElementById('app')
   );
-}
+};
 
 store.subscribe(log);
 store.subscribe(render);

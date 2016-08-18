@@ -1,9 +1,11 @@
 import React from 'react';
 import Input from './presentational/Input.js';
+import Student from './presentational/Student.js';
 
 export class Students extends React.Component {
 
   render() {
+    const students = this.props.students;
     return (
       <div>
         <h2> Students </h2>
@@ -19,20 +21,22 @@ export class Students extends React.Component {
           id='add-students'
         />
         <ul> 
-          {this.props.students.map((student, i) => 
-            <li key={i}> 
-              <a href="#" 
+          {students.map((student, i) => 
+            <li key={i}>
+              <Student 
                 onClick={()=>{
                   socket.emit('DELETE_STUDENT', this.props.current, student);
-                }}>
-                X
-              </a> {student}
+                }} 
+                student={student}
+              />
             </li>
+              
+        
           )}
         </ul>
       </div>
     );
-  }
-}
+  };
+};
 
 export default Students;

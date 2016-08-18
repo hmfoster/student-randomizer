@@ -2,12 +2,13 @@ import React from 'react';
 
 const NextStudent = ({current, nextStudent}) => (
   <div>
-    <button onClick={() => {
+    <button 
+      onClick={() => {
         socket.emit('PICK_STUDENT', current);
       }
     }
     >
-    Pick a student!
+      Pick a student!
     </button>
     <h2> 
       {nextStudent}
