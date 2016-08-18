@@ -1,96 +1,96 @@
 const r = require('rethinkdb');
-const _ = require('lodash');
+
 const cohorts = r.table('Cohorts');
 
-function getStick (connection, cohortName, list){
-  //pop off and return the last name from toPickFrom
+const getStick = (connection, cohortName, list) => {
   const chosen = list.pop();
   cohorts.get(cohortName).update({
-    'toPickFrom': list,
-    lastChosen : chosen
-  }).
-  run(connection)
+    toPickFrom: list,
+    lastChosen: chosen,
+  })
+  .run(connection);
 };
 
-function shuffleNames (list){
-  //shuffle array of names
-  let index, temp;
-  for (var i = 0; i < list.length; i++) {
-    index = Math.floor(Math.random()*(list.length-i)+i);
-    temp = list[i];
-    list[i] = list[index];
-    list[index] = temp;
-  };
-  return list;
+const shuffleNames = list => {
+  const newList = list.splice();
+  let index;
+  let temp;
+  let i;
+  for (i = 0; i < newList.length; i++) {
+    index = Math.floor((Math.random() * (newList.length - i)) + i);
+    temp = newList[i];
+    newList[i] = newList[index];
+    newList[index] = temp;
+  }
+  return newList;
 };
 
 module.exports = {
-  pickName : (connection, cohortName) => {
-    const cohort = cohorts.get(cohortName)
-    cohort('toPickFrom').run(connection).
-    then(list => {
-    //if toPickFrom is empty, create it from shuffleNames
-      if(!list.length){
-        cohort('students').run(connection).
-        then(students => {
-          cohort('lastChosen').run(connection).
-          then(lastChosen => {
-            let shuffled = shuffleNames(Object.keys(students));
-            if (shuffled[shuffled.length-1] === lastChosen){
+  pickName: (connection, cohortName) => {
+    const cohort = cohorts.get(cohortName);
+    cohort('toPickFrom').run(connection)
+    .then(list => {
+    // if toPickFrom is empty, create it from shuffleNames
+      if (!list.length) {
+        cohort('students').run(connection)
+        .then(students => {
+          cohort('lastChosen').run(connection)
+          .then(lastChosen => {
+            const shuffled = shuffleNames(Object.keys(students));
+            if (shuffled[shuffled.length - 1] === lastChosen) {
               shuffled.unshift(shuffled.pop());
             }
             getStick(connection, cohortName, shuffled);
-          })
+          });
         });
       } else {
-        cohort('toPickFrom').run(connection).
-        then(list => {
-          getStick(connection, cohortName, list)
+        cohort('toPickFrom').run(connection)
+        .then(list => {
+          getStick(connection, cohortName, list);
         });
       }
     });
   },
 
-  skip : (connection, cohortName) => {
-    const cohort = cohorts.get(cohortName)
-    cohort('toPickFrom').run(connection).
-    then(list => {
-      cohort('lastChosen').run(connection).
-      then(lastChosen => {
-        list.unshift(lastChosen);
-        list = shuffleNames(list);
+  skip: (connection, cohortName) => {
+    const cohort = cohorts.get(cohortName);
+    cohort('toPickFrom').run(connection)
+    .then(list => {
+      cohort('lastChosen').run(connection)
+      .then(lastChosen => {
+        let newList = list.splice();
+        newList.unshift(lastChosen);
+        newList = shuffleNames(newList);
         cohort.update({
-          'toPickFrom': list,
-          lastChosen : ''
-        }).
-        run(connection).
-        then(() => {
+          toPickFrom: newList,
+          lastChosen: '',
+        })
+        .run(connection)
+        .then(() => {
           module.exports.pickName(connection, cohortName);
         });
       });
     });
-  }, 
+  },
 
-  createGroups : (connection, cohortName, groupSize) => {
-    cohorts.get(cohortName)('students').run(connection).
-    then((students) => {
-      students = Object.keys(students);
-      let numStudents = students.length;
-      const numGroups = Math.floor(numStudents/groupSize);
-      let groups = (new Array(numGroups)).fill(null).map(group => {
-        return [];
-      });
+  createGroups: (connection, cohortName, groupSize) => {
+    cohorts.get(cohortName)('students').run(connection)
+    .then((students) => {
+      const studentsArray = Object.keys(students);
+      let numStudents = studentsArray.length;
+      const numGroups = Math.floor(numStudents / groupSize);
+      const groups = (new Array(numGroups)).fill(null).map(() => []);
       let currentGroup = 0;
-      let shuffled = shuffleNames(students);
-      while (numStudents > 0){
-        while (currentGroup < numGroups && numStudents > 0){
+      const shuffled = shuffleNames(studentsArray);
+      while (numStudents > 0) {
+        while (currentGroup < numGroups && numStudents > 0) {
           groups[currentGroup++].push(shuffled[--numStudents]);
         }
         currentGroup = 0;
       }
       cohorts.get(cohortName).update({
-        groups : groups
+        groups,
       }).run(connection);
     });
-  }
-}
+  },
+};

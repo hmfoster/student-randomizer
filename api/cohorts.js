@@ -1,55 +1,53 @@
-// Rethinkdb
 const r = require('rethinkdb');
 
 module.exports = {
-  newCohort : (socket, connection, cohortName) => {
-    r.table('Cohorts').
-    insert({
+  newCohort: (socket, connection, cohortName) => {
+    r.table('Cohorts')
+    .insert({
       id: cohortName,
       students: {},
       toPickFrom: [],
       lastChosen: '',
-      groups:[]
-      }, {conflict: 'error'}).
-    run(connection, (err, result) => {
-      if (err){
-          console.log(err);
+      groups: [],
+    }, { conflict: 'error' })
+    .run(connection, (err, result) => {
+      if (err) {
+        console.log(err);
       } else if (result.errors) {
-          console.log(result.first_error);
+        console.log(result.first_error);
       }
       module.exports.getCohortData(socket, connection, cohortName);
     });
   },
-  addStudents : (connection, cohortName, students) => {
-    students = students.split(/\n|,/).map(function(student){return student.trim()});
-    var studentObj = {};
+  addStudents: (connection, cohortName, studentsList) => {
+    const students = studentsList.split(/\n|,/).map(student => student.trim());
+    const studentObj = {};
     students.forEach(student => {
-        studentObj[student] = true;
-    })
+      studentObj[student] = true;
+    });
     r.table('Cohorts').get(cohortName).update({
-        'students': r.row('students').merge(studentObj)
-    }).
-    run(connection);
-
+      students: r.row('students').merge(studentObj),
+    })
+    .run(connection);
   },
 
-  deleteStudent : (connection, cohortName, student) => {
-    r.table('Cohorts').get(cohortName).
-    replace(r.row.without({
-        students: student
-    })).
-    run(connection);
+  deleteStudent: (connection, cohortName, student) => {
+    r.table('Cohorts').get(cohortName)
+    .replace(r.row.without({
+      students: student,
+    }))
+    .run(connection);
   },
 
-  deleteCohort : (socket, connection, cohortName) => {
-    r.table('Cohorts').get(cohortName).delete().run(connection, function(err, result){
+  deleteCohort: (socket, connection, cohortName) => {
+    r.table('Cohorts').get(cohortName).delete().run(connection, () => {
       module.exports.getCohortData(socket, connection, '');
     });
   },
 
-  getCohortData : (socket, connection, cohortName) => {
-    return r.table('Cohorts').get(cohortName).run(connection).then(result => {
+  getCohortData: (socket, connection, cohortName) => {
+    r.table('Cohorts').get(cohortName).run(connection).then(result => {
       socket.emit('SWITCH_COHORT', cohortName, result);
     });
-  }
-}
+  },
+};
