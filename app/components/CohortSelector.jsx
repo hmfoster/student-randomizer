@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Selector from './presentational/Selector.js';
+import Selector from './presentational/Selector.jsx';
 
 class CohortSelector extends React.Component {
   constructor(props) {

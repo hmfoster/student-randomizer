@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from './presentational/Input.js';
+import Input from './presentational/Input.jsx';
 
 
 const CreateCohort = () => (

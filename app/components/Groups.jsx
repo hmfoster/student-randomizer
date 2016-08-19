@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
-import Selector from './presentational/Selector.js';
+import Selector from './presentational/Selector.jsx';
 
 class groups extends React.Component {
   constructor(props) {

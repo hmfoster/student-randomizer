@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
-import Input from './presentational/Input.js';
-import Student from './presentational/Student.js';
+import Input from './presentational/Input.jsx';
+import Student from './presentational/Student.jsx';
 
 export class Students extends React.Component {
 
