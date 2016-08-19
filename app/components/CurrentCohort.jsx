@@ -1,38 +1,37 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Sticks from './presentational/Sticks.jsx';
 import Students from './Students.jsx';
 import CreateCohort from './CreateCohort.jsx';
 
-const CurrentCohort = ({current}) => {
-  if (current.cohortName === 'Create'){
-    return (
-      <CreateCohort />
-    )
-  }
-  else if (current.cohortName !== '' && current.cohortName !== 'Select'){
+const CurrentCohort = ({ current }) => {
+  if (current.cohortName === 'Create') {
+    return <CreateCohort />;
+  } else if (current.cohortName !== '' && current.cohortName !== 'Select') {
     return (
       <div>
         <h1>{current.cohortName}</h1>
-        <button 
+        <button
           onClick={() => {
             socket.emit('DELETE_COHORT', current.cohortName);
           }}
-        > 
+        >
           Delete Cohort
         </button>
         <Sticks
-          current={current.cohortName} 
+          current={current.cohortName}
           nextStudent={current.nextStudent}
           groups={current.groups}
           numStudents={Object.keys(current.students).length}
         />
-        <Students current={current.cohortName} students={Object.keys(current.students)}/>
+        <Students current={current.cohortName} students={Object.keys(current.students)} />
       </div>
-    )
-  } else {
-      return null;
+    );
   }
-  
+  return null;
+};
+
+CurrentCohort.propTypes = {
+  current: PropTypes.object,
 };
 
 export default CurrentCohort;

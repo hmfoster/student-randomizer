@@ -13,11 +13,11 @@ module.exports = (socket) =>
           newVal.lastChosen, newVal.groups);
       } else if (newVal && oldVal) {
         if (!_.isEqual(newVal.lastChosen, oldVal.lastChosen)) {
-          socket.emit('NEXT_STUDENT', newVal.id, newVal.lastChosen);
+          socket.emit('NEXT_STUDENT', newVal.lastChosen);
         } else if (!_.isEqual(newVal.students, oldVal.students)) {
-          socket.emit('UPDATE_STUDENTS', newVal.id, newVal.students);
+          socket.emit('UPDATE_STUDENTS', newVal.students);
         } else if (!_.isEqual(newVal.groups, oldVal.groups)) {
-          socket.emit('CREATE_GROUPS', newVal.id, newVal.groups);
+          socket.emit('CREATE_GROUPS', newVal.groups);
         }
       } else if (oldVal && !newVal) {
         socket.emit('DELETE_COHORT' , row.oldVal.id);

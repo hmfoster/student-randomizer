@@ -1,65 +1,62 @@
-export default function(store) {
-
+export default function (store) {
   socket.on('CREATE_COHORT', (cohortName, students, nextStudent, groups) => {
     store.dispatch({
       type: 'CREATE_COHORT',
-      cohortName: cohortName,
-      students: students,
-      nextStudent: nextStudent, 
-      groups: groups
+      cohortName,
+      students,
+      nextStudent,
+      groups,
     });
   });
 
   socket.on('DELETE_COHORT', cohortName => {
     store.dispatch({
       type: 'DELETE_COHORT',
-      name: cohortName
+      cohortName,
     });
   });
 
-  socket.on('UPDATE_STUDENTS', (cohortName, students) => {
+  socket.on('UPDATE_STUDENTS', students => {
     store.dispatch({
       type: 'UPDATE_STUDENTS',
-      name: cohortName,
-      students: students
+      students,
     });
   });
 
-  socket.on('NEXT_STUDENT', (cohortName, student) => {
+  socket.on('NEXT_STUDENT', nextStudent => {
     store.dispatch({
       type: 'NEXT_STUDENT',
-      name: cohortName,
-      nextStudent: student
+      nextStudent,
     });
   });
 
-  socket.on('CREATE_GROUPS', (cohortName, groups) => {
+  socket.on('CREATE_GROUPS', groups => {
     store.dispatch({
       type: 'CREATE_GROUPS',
-      name: cohortName, 
-      groups: groups
+      groups,
     });
   });
 
-  socket.on('SWITCH_COHORT', (cohortName, cohortData) => {
-    if (cohortName === 'Please select a cohort'){
-      cohortName = 'Select'
-    } else if (cohortName === 'Create New Cohort'){
+  socket.on('SWITCH_COHORT', (name, cohortData) => {
+    let cohortName = name;
+    if (cohortName === 'Please select a cohort') {
+      cohortName = 'Select';
+    } else if (cohortName === 'Create New Cohort') {
       cohortName = 'Create';
     }
-    if (cohortData === null){
+    if (cohortData === null) {
       store.dispatch({
-        type: 'SWITCH_COHORT', 
-        cohortName: cohortName,
+        type: 'SWITCH_COHORT',
+        cohortName,
       });
     } else {
       store.dispatch({
-        type: 'SWITCH_COHORT', 
-        cohortName: cohortData.id, 
+        type: 'SWITCH_COHORT',
+        cohortName: cohortData.id,
         students: cohortData.students,
-        nextStudent: cohortData.lastChosen, 
-        groups: cohortData.groups
+        nextStudent: cohortData.lastChosen,
+        groups: cohortData.groups,
       });
     }
   });
-};
+}

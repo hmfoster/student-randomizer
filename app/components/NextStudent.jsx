@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-const NextStudent = ({current, nextStudent}) => (
+const NextStudent = ({ current, nextStudent }) => (
   <div>
-    <button 
+    <button
       onClick={() => {
         socket.emit('PICK_STUDENT', current);
       }
@@ -10,11 +10,15 @@ const NextStudent = ({current, nextStudent}) => (
     >
       Pick a student!
     </button>
-    <h2> 
+    <h2>
       {nextStudent}
     </h2>
   </div>
 );
 
-export default NextStudent;
+NextStudent.propTypes = {
+  current: PropTypes.string,
+  nextStudent: PropTypes.string,
+};
 
+export default NextStudent;
