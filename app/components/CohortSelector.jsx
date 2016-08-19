@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import Selector from './presentational/Selector.jsx';
+import store from '../stores/stores.js';
+
 
 class CohortSelector extends React.Component {
   constructor(props) {
@@ -16,7 +18,14 @@ class CohortSelector extends React.Component {
         value={this.state.selectValue}
         onChange={(e) => {
           this.setState({ selectValue: e.target.value });
-          socket.emit('SWITCH_COHORT', e.target.value);
+          if (e.target.value === 'Create New Cohort') {
+            store.dispatch({
+              type: 'SWITCH_COHORT',
+              cohortName: 'Create',
+            });
+          } else {
+            socket.emit('SWITCH_COHORT', e.target.value);
+          }
         }}
         options={options}
         choice="cohort"
