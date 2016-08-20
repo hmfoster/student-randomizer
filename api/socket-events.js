@@ -9,18 +9,18 @@ module.exports = (socket) =>
       if (err) {
         return console.log(err);
       } else if (newVal && !oldVal) {
-        socket.emit('CREATE_COHORT', newVal.id, newVal.students,
+        return socket.emit('CREATE_COHORT', newVal.id, newVal.students,
           newVal.lastChosen, newVal.groups);
       } else if (newVal && oldVal) {
         if (!_.isEqual(newVal.lastChosen, oldVal.lastChosen)) {
-          socket.emit('NEXT_STUDENT', newVal.lastChosen);
+          return socket.emit('NEXT_STUDENT', newVal.lastChosen);
         } else if (!_.isEqual(newVal.students, oldVal.students)) {
-          socket.emit('UPDATE_STUDENTS', newVal.students);
+          return socket.emit('UPDATE_STUDENTS', newVal.students);
         } else if (!_.isEqual(newVal.groups, oldVal.groups)) {
-          socket.emit('CREATE_GROUPS', newVal.groups);
+          return socket.emit('CREATE_GROUPS', newVal.groups);
         }
       } else if (oldVal && !newVal) {
-        socket.emit('DELETE_COHORT' , row.oldVal.id);
+        return socket.emit('DELETE_COHORT' , row.oldVal.id);
       }
       return null;
     });

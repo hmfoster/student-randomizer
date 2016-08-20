@@ -4,7 +4,7 @@ const cohorts = r.table('Cohorts');
 
 const getStick = (connection, cohortName, list) => {
   const chosen = list.pop();
-  cohorts.get(cohortName).update({
+  return cohorts.get(cohortName).update({
     toPickFrom: list,
     lastChosen: chosen,
   })
@@ -28,11 +28,11 @@ const shuffleNames = list => {
 module.exports = {
   pickName: (connection, cohortName) => {
     const cohort = cohorts.get(cohortName);
-    cohort('toPickFrom').run(connection)
+    return cohort('toPickFrom').run(connection)
     .then(list => {
     // if toPickFrom is empty, create it from shuffleNames
       if (!list.length) {
-        cohort('students').run(connection)
+        return cohort('students').run(connection)
         .then(students => {
           cohort('lastChosen').run(connection)
           .then(lastChosen => {
@@ -44,7 +44,7 @@ module.exports = {
           });
         });
       } else {
-        cohort('toPickFrom').run(connection)
+        return cohort('toPickFrom').run(connection)
         .then(list => {
           getStick(connection, cohortName, list);
         });
@@ -54,27 +54,27 @@ module.exports = {
 
   skip: (connection, cohortName) => {
     const cohort = cohorts.get(cohortName);
-    cohort('toPickFrom').run(connection)
+    return cohort('toPickFrom').run(connection)
     .then(list => {
-      cohort('lastChosen').run(connection)
+      return cohort('lastChosen').run(connection)
       .then(lastChosen => {
         let newList = list.splice();
         newList.unshift(lastChosen);
         newList = shuffleNames(newList);
-        cohort.update({
+        return cohort.update({
           toPickFrom: newList,
           lastChosen: '',
         })
         .run(connection)
         .then(() => {
-          module.exports.pickName(connection, cohortName);
+          return module.exports.pickName(connection, cohortName);
         });
       });
     });
   },
 
   createGroups: (connection, cohortName, groupSize) => {
-    cohorts.get(cohortName)('students').run(connection)
+    return cohorts.get(cohortName)('students').run(connection)
     .then((students) => {
       const studentsArray = Object.keys(students);
       let numStudents = studentsArray.length;
@@ -88,7 +88,7 @@ module.exports = {
         }
         currentGroup = 0;
       }
-      cohorts.get(cohortName).update({
+      return cohorts.get(cohortName).update({
         groups,
       }).run(connection);
     });

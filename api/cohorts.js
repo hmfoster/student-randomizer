@@ -2,7 +2,7 @@ const r = require('rethinkdb');
 
 module.exports = {
   newCohort: (socket, connection, cohortName) => {
-    r.table('Cohorts')
+    return r.table('Cohorts')
     .insert({
       id: cohortName,
       students: {},
@@ -12,9 +12,9 @@ module.exports = {
     }, { conflict: 'error' })
     .run(connection, (err, result) => {
       if (err) {
-        console.log(err);
+        throw err;
       } else if (result.errors) {
-        console.log(result.first_error);
+        throw result.first_error;
       }
       module.exports.getCohortData(socket, connection, cohortName);
     });
@@ -22,7 +22,7 @@ module.exports = {
   addStudents: (connection, cohortName, studentsList) => {
     const students = studentsList.split(/\n|,/).map(student => student.trim());
     const studentObj = {};
-    students.forEach(student => {
+    return students.forEach(student => {
       studentObj[student] = true;
     });
     r.table('Cohorts').get(cohortName).update({
@@ -32,7 +32,7 @@ module.exports = {
   },
 
   deleteStudent: (connection, cohortName, student) => {
-    r.table('Cohorts').get(cohortName)
+    return r.table('Cohorts').get(cohortName)
     .replace(r.row.without({
       students: student,
     }))
@@ -40,13 +40,13 @@ module.exports = {
   },
 
   deleteCohort: (socket, connection, cohortName) => {
-    r.table('Cohorts').get(cohortName).delete().run(connection, () => {
+    return r.table('Cohorts').get(cohortName).delete().run(connection, () => {
       module.exports.getCohortData(socket, connection, '');
     });
   },
 
   getCohortData: (socket, connection, cohortName) => {
-    r.table('Cohorts').get(cohortName).run(connection).then(result => {
+    return r.table('Cohorts').get(cohortName).run(connection).then(result => {
       socket.emit('SWITCH_COHORT', cohortName, result);
     });
   },

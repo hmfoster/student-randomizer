@@ -8,9 +8,7 @@ SocketListeners(store);
 const log = () => {
   console.log('Store', store.getState());
 };
-console.log('hi')
 const render = () => {
-  console.log('here')
   let current = store.getState().currentCohort;
   const allCohorts = Object.keys(store.getState().allCohorts);
   if (!current.cohortName) {
