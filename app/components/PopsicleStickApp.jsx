@@ -11,7 +11,7 @@ const PopsicleStickApp = ({ allCohorts, current }) => (
 
 PopsicleStickApp.propTypes = {
   allCohorts: PropTypes.arrayOf(PropTypes.string),
-  current: PropTypes.string,
+  current: PropTypes.object,
 };
 
 export default PopsicleStickApp;
