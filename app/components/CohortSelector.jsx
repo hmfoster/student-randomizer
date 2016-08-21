@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import Selector from './presentational/Selector.jsx';
 import store from '../stores/stores.js';
 
@@ -11,7 +11,8 @@ class CohortSelector extends React.Component {
     };
   }
   render() {
-    const options = ['Select a Cohort', ...this.props.allCohorts, 'Create New Cohort'];
+    const state = store.getState();
+    const options = ['Select a Cohort', ...state.allCohorts, 'Create New Cohort'];
 
     return (
       <Selector
@@ -34,9 +35,5 @@ class CohortSelector extends React.Component {
     );
   }
 }
-
-CohortSelector.propTypes = {
-  allCohorts: PropTypes.arrayOf(PropTypes.string),
-};
 
 export default CohortSelector;
