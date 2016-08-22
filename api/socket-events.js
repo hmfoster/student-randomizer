@@ -3,9 +3,8 @@ const _ = require('lodash');
 module.exports = (socket) =>
   rows => {
     rows.each((err, row) => {
-      const newVal = row.newVal;
-      const oldVal = row.oldVal;
-
+      const newVal = row.new_val;
+      const oldVal = row.old_val;
       if (err) {
         return console.log(err);
       } else if (newVal && !oldVal) {

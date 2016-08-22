@@ -12,7 +12,7 @@ const getStick = (connection, cohortName, list) => {
 };
 
 const shuffleNames = list => {
-  const newList = list.splice();
+  const newList = list.slice();
   let index;
   let temp;
   let i;
@@ -66,15 +66,13 @@ module.exports = {
           lastChosen: '',
         })
         .run(connection)
-        .then(() => {
-          return module.exports.pickName(connection, cohortName);
-        });
+        .then(() => module.exports.pickName(connection, cohortName));
       });
     });
   },
 
-  createGroups: (connection, cohortName, groupSize) => {
-    return cohorts.get(cohortName)('students').run(connection)
+  createGroups: (connection, cohortName, groupSize) =>
+    cohorts.get(cohortName)('students').run(connection)
     .then((students) => {
       const studentsArray = Object.keys(students);
       let numStudents = studentsArray.length;
@@ -91,6 +89,5 @@ module.exports = {
       return cohorts.get(cohortName).update({
         groups,
       }).run(connection);
-    });
-  },
+    }),
 };

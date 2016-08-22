@@ -22,32 +22,29 @@ module.exports = {
   addStudents: (connection, cohortName, studentsList) => {
     const students = studentsList.split(/\n|,/).map(student => student.trim());
     const studentObj = {};
-    return students.forEach(student => {
+    students.forEach(student => {
       studentObj[student] = true;
     });
-    r.table('Cohorts').get(cohortName).update({
+    return r.table('Cohorts').get(cohortName).update({
       students: r.row('students').merge(studentObj),
     })
     .run(connection);
   },
 
-  deleteStudent: (connection, cohortName, student) => {
-    return r.table('Cohorts').get(cohortName)
+  deleteStudent: (connection, cohortName, student) =>
+    r.table('Cohorts').get(cohortName)
     .replace(r.row.without({
       students: student,
     }))
-    .run(connection);
-  },
+    .run(connection),
 
-  deleteCohort: (socket, connection, cohortName) => {
-    return r.table('Cohorts').get(cohortName).delete().run(connection, () => {
+  deleteCohort: (socket, connection, cohortName) =>
+    r.table('Cohorts').get(cohortName).delete().run(connection, () => {
       module.exports.getCohortData(socket, connection, '');
-    });
-  },
+    }),
 
-  getCohortData: (socket, connection, cohortName) => {
-    return r.table('Cohorts').get(cohortName).run(connection).then(result => {
+  getCohortData: (socket, connection, cohortName) =>
+    r.table('Cohorts').get(cohortName).run(connection).then(result => {
       socket.emit('SWITCH_COHORT', cohortName, result);
-    });
-  },
+    }),
 };
