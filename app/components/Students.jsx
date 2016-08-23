@@ -1,18 +1,20 @@
 import React, { PropTypes } from 'react';
 import Input from './presentational/Input.jsx';
 import Student from './presentational/Student.jsx';
+import store from '../stores/stores.js';
 
 export class Students extends React.Component {
 
   render() {
-    const students = this.props.students;
+    const current = store.getState().currentCohort;
+    const students = Object.keys(current.students);
     return (
       <div>
         <h2> Students </h2>
         <Input
           onClick={() => {
             document.getElementById('add-students').value = '';
-            socket.emit('ADD_STUDENTS', this.props.current, this.state.value);
+            socket.emit('ADD_STUDENTS', current.cohortName, this.state.value);
           }}
           onChange={(e) => {
             this.setState({ value: e.target.value });
@@ -25,7 +27,7 @@ export class Students extends React.Component {
             <li key={i}>
               <Student
                 onClick={() => {
-                  socket.emit('DELETE_STUDENT', this.props.current, student);
+                  socket.emit('DELETE_STUDENT', current.cohortName, student);
                 }}
                 student={student}
               />

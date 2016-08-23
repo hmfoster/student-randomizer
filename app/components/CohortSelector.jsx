@@ -10,9 +10,19 @@ class CohortSelector extends React.Component {
       selectValue: 'Select a Cohort',
     };
   }
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    );
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   render() {
-    const state = store.getState();
-    const options = ['Select a Cohort', ...state.allCohorts, 'Create New Cohort'];
+    const allCohorts = Object.keys(store.getState().allCohorts);
+    const options = ['Select a Cohort', ...allCohorts, 'Create New Cohort'];
 
     return (
       <Selector

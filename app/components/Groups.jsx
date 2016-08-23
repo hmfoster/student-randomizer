@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import Selector from './presentational/Selector.jsx';
+import store from '../stores/stores.js';
 
 class groups extends React.Component {
   constructor(props) {
@@ -10,14 +11,27 @@ class groups extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   getCurrMin() {
-    const lastGroup = this.props.groups[this.props.groups.length - 1];
+    const lastGroup = store.getState().currentCohort
+                      .groups[store.getState().currentCohort.groups.length - 1];
     return lastGroup ? lastGroup.length : 2;
   }
 
   render() {
-    const groups = this.props.groups;
-    let options = _.range(2, Math.floor(this.props.numStudents / 2) + 1);
+    const current = store.getState().currentCohort;
+    const groups = current.groups;
+    const numStudents = Object.keys(current.students).length;
+    let options = _.range(2, Math.floor(numStudents / 2) + 1);
     if (!options.length) {
       options.push(2);
     }
@@ -33,7 +47,7 @@ class groups extends React.Component {
         />
         <button
           onClick={() => {
-            socket.emit('CREATE_GROUPS', this.props.current, this.state.selectValue);
+            socket.emit('CREATE_GROUPS', current.cohortName, this.state.selectValue);
           }
         }
         >
@@ -55,11 +69,5 @@ class groups extends React.Component {
     );
   }
 }
-
-groups.propTypes = {
-  groups: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
-  numStudents: PropTypes.number,
-  current: PropTypes.string,
-};
 
 export default groups;

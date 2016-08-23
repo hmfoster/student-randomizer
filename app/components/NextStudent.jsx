@@ -1,24 +1,35 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import store from '../stores/stores.js';
 
-const NextStudent = ({ current, nextStudent }) => (
-  <div>
-    <button
-      onClick={() => {
-        socket.emit('PICK_STUDENT', current);
-      }
-    }
-    >
-      Pick a student!
-    </button>
-    <h2>
-      {nextStudent}
-    </h2>
-  </div>
-);
+class NextStudent extends React.Component {
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
 
-NextStudent.propTypes = {
-  current: PropTypes.string,
-  nextStudent: PropTypes.string,
-};
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  render() {
+    const current = store.getState().currentCohort;
+    return (
+      <div>
+        <button
+          onClick={() => {
+            socket.emit('PICK_STUDENT', current.cohortName);
+          }
+        }
+        >
+          Pick a student!
+        </button>
+        <h2>
+          {current.nextStudent}
+        </h2>
+      </div>
+    );
+  }
+}
 
 export default NextStudent;
