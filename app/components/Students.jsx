@@ -4,6 +4,15 @@ import Student from './presentational/Student.jsx';
 import store from '../stores/stores.js';
 
 export class Students extends React.Component {
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
   render() {
     const current = store.getState().currentCohort;
