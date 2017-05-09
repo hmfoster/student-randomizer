@@ -24,6 +24,14 @@ class NextStudent extends React.Component {
         >
           Pick a student!
         </button>
+        <button
+          onClick={() => {
+            socket.emit('SKIP_STUDENT', current.cohortName);
+          }
+        }
+        >
+          Skip
+        </button>
         <h2>
           {current.nextStudent}
         </h2>

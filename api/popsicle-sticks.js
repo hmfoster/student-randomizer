@@ -58,7 +58,7 @@ module.exports = {
     .then(list => {
       return cohort('lastChosen').run(connection)
       .then(lastChosen => {
-        let newList = list.splice();
+        let newList = list.slice();
         newList.unshift(lastChosen);
         newList = shuffleNames(newList);
         return cohort.update({
